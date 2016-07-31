@@ -1,6 +1,10 @@
 class LinksController < ApplicationController
   before_action :set_link, only: [:show, :edit, :update, :destroy]
 
+  def go
+    @link = Link.find_by_in_url!(params[:in_url])
+    redirect_to @link.out_url, :status => @link.http_status
+  end
   # GET /links
   # GET /links.json
   def index
