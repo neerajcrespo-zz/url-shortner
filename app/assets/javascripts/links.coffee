@@ -9,10 +9,24 @@ onReaderLoad = (event) ->
 
 $('document').ready ->
 
+  $('#homepage').click (event) ->
+    location.href = '/links'
+    return
+
   $('#shorten_btn').click (event) ->
     out_url =  $('#shorten_url').val()
     if out_url.replace(/\s/g, '').length
-      console.log "fine no space"
+      formdata =  {'out_url' : out_url, 'http_status' : 301}
+      console.log formdata
+      $.post "/links.json", formdata, ((data, status) ->
+        location.href = '/links/'+data.id
+        return
+      ), 'json'
+      .fail((data)->
+        console.log "failed error"
+        alert "Failed to create resource, I am fixing this shortly."
+      )
+
     else
       console.log "contains space"
   
